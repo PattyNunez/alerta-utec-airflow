@@ -1,0 +1,32 @@
+[
+  {
+    "id": "INC-0001",
+    "tipo": "servicios",
+    "ubicacion": "Laboratorio 2",
+    "descripcion": "No hay internet",
+    "urgencia": "alta",
+    "estado": "pendiente",
+    "creado_en": "2025-11-15T08:00:00Z",
+    "actualizado_en": "2025-11-15T08:10:00Z"
+  },
+  {
+    "id": "INC-0002",
+    "tipo": "infraestructura",
+    "ubicacion": "Edificio B - Piso 1",
+    "descripcion": "Foco quemado",
+    "urgencia": "baja",
+    "estado": "resuelto",
+    "creado_en": "2025-11-14T15:00:00Z",
+    "actualizado_en": "2025-11-14T16:00:00Z"
+  },
+  {
+    "id": "INC-0003",
+    "tipo": "seguridad",
+    "ubicacion": "Edificio C - Entrada",
+    "descripcion": "Puerta sin cerrar",
+    "urgencia": "media",
+    "estado": "en_atencion",
+    "creado_en": "2025-11-15T09:30:00Z",
+    "actualizado_en": "2025-11-15T09:45:00Z"
+  }
+]
