@@ -8,6 +8,7 @@ from collections import Counter
 
 import boto3
 from botocore.exceptions import ClientError
+import requests  
 
 
 # Ruta del repo (carpeta padre de /dags)
@@ -18,25 +19,33 @@ INPUT_FILE = os.path.join(DATA_PATH, "incidentes_mock.json")
 OUTPUT_FILE = os.path.join(DATA_PATH, "reporte_incidentes.json")
 
 # Nombre del bucket S3 (cambiar nombre x la variable de entorno)
-S3_BUCKET = os.environ.get("S3_REPORTS_BUCKET", "")  
+S3_BUCKET = "alerta-utec-reportes" 
 
 
 # funciones del DAG
 
 
 def extraer_incidentes(**context):
-    """
-    Extrae los incidentes desde el archivo mock local.
-    Más adelante lo cambiaremos por DynamoDB o un API del backend.
-    """
-    if not os.path.exists(INPUT_FILE):
-        raise FileNotFoundError(f"No existe el archivo: {INPUT_FILE}")
+    url = "https://zisd0y9a8j.execute-api.us-east-1.amazonaws.com/dev"
 
-    with open(INPUT_FILE, "r", encoding="utf-8") as f:
-        incidentes = json.load(f)
+    incidentes = None
 
-    # Enviar incidentes a la siguiente tarea
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        incidentes = response.json()
+        print("Usando datos del API real.")
+    except Exception as e:
+        print("Error al obtener datos del API, usando mock:", e)
+
+    if incidentes is None:
+        with open(INPUT_FILE, "r", encoding="utf-8") as f:
+            incidentes = json.load(f)
+        print("Incidentes cargados desde incidentes_mock.json")
+        
     context["ti"].xcom_push(key="incidentes", value=incidentes)
+
+
 
 
 def calcular_estadisticas(**context):
